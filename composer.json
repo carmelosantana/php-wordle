@@ -1,0 +1,32 @@
+{
+    "name": "carmelosantana/php-wordle",
+    "description": "CLI Wordle clone.",
+    "version": "0.1.0",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CarmeloSantana\\PHPWordle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Carmelo Santana",
+            "email": "me@carmelosantana.com"
+        }
+    ],
+    "require": {
+        "php-school/cli-menu": "^4.3",
+        "nunomaduro/termwind": "^1.10",
+        "tigitz/php-spellchecker": "^0.4.0",
+        "vlucas/phpdotenv": "^5.4"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.21"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
