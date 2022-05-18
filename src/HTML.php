@@ -6,6 +6,11 @@ namespace CarmeloSantana\PHPWordle;
 
 class HTML
 {
+    public function __construct()
+    {
+        $this->theme = new Theme();
+    }
+
     public function board()
     {
         $length = (new Helper())::getMaxLength();
@@ -17,7 +22,9 @@ class HTML
         for ($i = 0; $i < $show; $i++) {
             $rows .= '<div class="w-full mb-1 text-center">';
             for ($c = 0; $c < $length; $c++) {
-                $rows .= $this::tag('span', 'mx-1 px-1 bg-slate-700 text-center font-bold w-1/' . ($show + 1), strtoupper((new Helper)::getGuesses($i, $c, ' ')));
+                $bg = $this->theme->getTileBG((new Helper())::getScore($i, $c));
+                $text = $this->theme->getTileText((new Helper())::getScore($i, $c));
+                $rows .= $this::tag('span', "$bg $text mx-1 px-1 text-center font-bold w-1/" . ($show + 1), strtoupper((new Helper)::getGuesses($i, $c, ' ')));
             }
             $rows .= '</div>';
         }
@@ -31,9 +38,9 @@ class HTML
         $out = '';
 
         if ((new Helper())::isDebug()) {
-            $word = (new Helper())::isDebug()::getWord();
+            $word = (new Helper())::getWord();
             $guess = (new Helper())::getGuess();
-            $retries = (new Helper())::getRetries();
+            $retries = (new Helper())::getTries();
 
             $out = <<<HTML
                 <div>
@@ -74,10 +81,13 @@ class HTML
 
     public function navTop()
     {
+        $bg = $this->theme->get('logo-bg');
+        $text = $this->theme->get('logo-text');
+
         $out = <<<HTML
             <div class="m-1 flex-l">
                 <p class="m-0 text-center w-full">
-                    <span class="px-1 bg-neutral-50 text-neutral-900 text-center">php-<b>Wordle</b></span>
+                    <span class="px-1 $bg $text text-center">php-<b>Wordle</b></span>
                 </p>
             </div>
         HTML;
@@ -88,5 +98,5 @@ class HTML
     public static function tag(string $tag, string $class = '', string $text = '')
     {
         return "<$tag" . (!empty($class) ? " class='$class'" : "") . ">$text</$tag>";
-    }    
+    }
 }
