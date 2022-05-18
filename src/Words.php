@@ -57,25 +57,4 @@ class Words
         // TODO: Add spell check.
         return true;
     }
-
-
-    public function score($guess, $word)
-    {
-        $guess = str_split($guess);
-        $word = str_split($word);
-
-        $score = [];
-
-        foreach ($guess as $i => $letter) {
-            if (strtolower($letter) == strtolower($word[$i])) {
-                $score[$i] = 2;
-            } elseif (in_array(strtolower($letter), $word)) {
-                $score[$i] = 1;
-            } else {
-                $score[$i] = 0;
-            }
-        }
-
-        return $score;
-    }
 }
