@@ -84,6 +84,9 @@ class Render
     // We're done.
     public function stop()
     {
+        // Final render before close.
+        $this->container();
+
         // ¡Hasta mañana!
         exit;
     }    
