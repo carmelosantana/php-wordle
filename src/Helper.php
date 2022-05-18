@@ -12,6 +12,11 @@ class Helper
         $GLOBALS['GAME']->guesses[] = str_split($guess);
     }
 
+    public static function addScore($score)
+    {
+        $GLOBALS['GAME']->scores[] = $score;
+    }
+
     public static function getInstance()
     {
         return $GLOBALS['GAME'];
@@ -37,6 +42,11 @@ class Helper
         return self::getInstance()->round;
     }
 
+    public static function getScore($row, $char, $default = 0)
+    {
+        return self::getInstance()->scores[$row][$char] ?? $default;
+    }
+
     public static function getMaxDisplay()
     {
         return self::getRound()->mode->getCurrent()['max_display'];
@@ -50,6 +60,11 @@ class Helper
     public static function getMaxTries()
     {
         return self::getRound()->mode->getCurrent()['max_tries'];
+    }
+
+    public static function getTheme(string $style)
+    {
+        return self::getRound()->render->theme->get($style);
     }
 
     public static function getTries()
@@ -81,7 +96,7 @@ class Helper
 
     public static function isDebug()
     {
-        return self::isEnabled(self::getenv('WORDLE_DEBUG'));
+        return self::isEnabled(self::getenv('DEBUG'));
     }
 
     public static function keyboardInput()
