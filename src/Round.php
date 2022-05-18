@@ -10,7 +10,7 @@ class Round
 
     public array $guesses = [];
 
-    public int $score = 0;
+    public array $scores = [];
 
     public int $tries = 0;
 
@@ -35,23 +35,43 @@ class Round
 
     public function game()
     {
-        // Start rendering game board.
-        $this->render->container();
-
         // Prompt for guess, while retries don't equal 0.
         while ($this->tries > 0) {
+            // Start rendering game board.
+            $this->render->container();
+
             // Reset guess.
             $this->guess = $this->render->askWord();
 
             // If word is valid score it. 
             if ($this->words->isValidWord($this->guess)) {
-                $this->words->score($this->guess, $this->word);
                 (new Helper())::addGuess($this->guess);
+                (new Helper())::addScore($this->score($this->guess));
                 $this->tries--;
             }
         }
 
         // If retries equal 0, game over.
         $this->render->stop();
+    }
+
+    public function score($guess)
+    {
+        $guess = str_split($guess);
+        $word = str_split((new Helper())::getWord());
+
+        $score = [];
+
+        foreach ($guess as $i => $letter) {
+            if (strtolower($letter) == strtolower($word[$i])) {
+                $score[$i] = 2;
+            } elseif (in_array(strtolower($letter), $word)) {
+                $score[$i] = 1;
+            } else {
+                $score[$i] = 0;
+            }
+        }
+
+        return $score;
     }
 }
