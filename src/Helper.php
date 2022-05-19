@@ -8,7 +8,6 @@ class Helper
 {
     public static function addGuess($guess)
     {
-        // explode string into array each character as value
         $GLOBALS['GAME']->guesses[] = str_split($guess);
     }
 
@@ -60,6 +59,11 @@ class Helper
     public static function getMaxTries()
     {
         return self::getRound()->mode->getCurrent()['max_tries'];
+    }
+
+    public static function getState()
+    {
+        return self::getRound()->state;
     }
 
     public static function getTheme(string $style)
