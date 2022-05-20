@@ -24,16 +24,32 @@ class Render
 
         $out = '';
         $out .= $this->html->header();
+        $out .= $this->html->debug();
         $out .= $this->html->navTop();
-        $out .= $this->html->board();
-        $out .= $this->html->debugBar();
+
+        // Render various game states.
+        switch ((new Helper())::getState()) {
+            case State::Won:
+            case State::Loss:
+                $out .= $this->html->board();
+                // $out .= $this->html->report();
+
+            case State::Loss:
+                $out .= $this->html->answer();
+                break;
+
+            default:
+                $out .= $this->html->board();
+                break;
+        }
+
         $out .= $this->html->footer();
 
         // Render the container.
         render($out);
     }
 
-    public function inputUpdate($answer)
+    public function inputUpdate(string $answer): void
     {
         (new Helper())::addGuess($answer);
         $this->container();
@@ -49,28 +65,28 @@ class Render
         while ($tries == (new Helper())::getTries()) {
             $c = (new Helper())::keyboardInput();
 
-            if ( $skip != 0 ){
+            if ($skip != 0) {
                 $skip--;
                 continue;
             }
 
             switch ($c) {
-                // [return]
                 case "\n":
+                    // [return]
                     return $answer;
 
-                // [backspace]
                 case "\x7f":
+                    // [backspace]
                     $answer = substr($answer, 0, -1);
                     break;
 
-                // Arrow keys
                 case "[":
+                    // Arrow keys
                     $skip = 1;
                     break;
 
-                // Anything else
                 default:
+                    // Anything else
                     if (strlen($answer) < (new Helper())::getMaxLength() and preg_match('/^[a-zA-Z]$/', $c)) {
                         $answer .= $c;
                     }
@@ -89,5 +105,5 @@ class Render
 
         // ¡Hasta mañana!
         exit;
-    }    
+    }
 }

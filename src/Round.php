@@ -23,19 +23,22 @@ class Round
         $this->render = new Render();
         $this->words = new Words();
 
-        // Set game mode choosen by user
+        // Set game mode.
         $this->mode->set($mode);
 
-        // Get word for this session and game mode
+        // Get word for this session and game mode.
         $this->word = $this->words->getRandomWord($this->mode->getCurrent()['seed']);
 
-        // Set retries
+        // Set tries.
         $this->tries = $this->mode->getCurrent()['max_tries'];
     }
 
     public function game()
     {
-        // Prompt for guess, while retries don't equal 0.
+        // Start game.
+        $this->state = State::Guessing;
+
+        // Prompt for guess, while tries don't equal 0.
         while ($this->tries > 0) {
             // Start rendering game board.
             $this->render->container();
@@ -47,11 +50,20 @@ class Round
             if ($this->words->isValidWord($this->guess)) {
                 (new Helper())::addGuess($this->guess);
                 (new Helper())::addScore($this->score($this->guess));
+
+                // If word is correct, lets end this game.
+                if ($this->guess == $this->word) {
+                    $this->state = State::Won;
+                    $this->render->stop();
+                }
+
+                // If word is not correct, decrement tries.
                 $this->tries--;
             }
         }
 
         // If retries equal 0, game over.
+        $this->state = State::Loss;
         $this->render->stop();
     }
 
@@ -71,7 +83,7 @@ class Round
                 $score[$i] = 0;
             }
         }
-
+        
         return $score;
     }
 }
