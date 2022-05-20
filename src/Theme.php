@@ -7,28 +7,20 @@ namespace CarmeloSantana\PHPWordle;
 class Theme
 {
     public array $default = [
-        'logo-bg' => 'bg-neutral-50',
-        'logo-text' => 'text-neutral-900',
-        'tile-0-bg' => 'bg-slate-700',
-        'tile-0-text' => 'text-neutral-50',
-        'tile-1-bg' => 'bg-amber-500',
-        'tile-1-text' => 'text-neutral-50',
-        'tile-2-bg' => 'bg-emerald-500',
-        'tile-2-text' => 'text-neutral-50',
+        'answer' => ['text-neutral-900', 'bg-neutral-50'],
+        'logo' => ['text-neutral-50', ''],
+        'tile-0' => ['text-neutral-50', 'bg-slate-700'],
+        'tile-1' => ['text-neutral-50', 'bg-amber-500'],
+        'tile-2' => ['text-neutral-50', 'bg-emerald-500'],
     ];
 
     public function get(string $style)
     {
-        return $this->default[$style];
+        return implode(' ', $this->default[$style]);
     }
 
-    public function getTileBG(int $score)
+    public function getTile(int $score)
     {
-        return $this->get('tile-' . $score . '-bg');
-    }
-
-    public function getTileText(int $score)
-    {
-        return $this->get('tile-' . $score . '-text');
+        return $this->get('tile-' . $score);
     }
 }
