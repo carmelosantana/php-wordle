@@ -11,6 +11,30 @@ class HTML
         $this->theme = new Theme();
     }
 
+    public function answer()
+    {
+        $word = (new Helper())::getWord();
+
+        return $this->bar($word, 'answer');
+    }
+
+    public function bar(
+        string $content,
+        string $style,
+    ) {
+        $style = $this->theme->get($style);
+
+        $out = <<<HTML
+            <div class="m-1 flex-l">
+                <p class="m-0 text-center w-full">
+                    <span class="px-1 $style text-center">$content</span>
+                </p>
+            </div>
+        HTML;
+
+        return $out;
+    }
+
     public function board()
     {
         $length = (new Helper())::getMaxLength();
@@ -18,13 +42,17 @@ class HTML
         $show = (new Helper())::getMaxDisplay();
 
         $rows = '';
-        $rows .= '<div class="m-1 flex-1">';
+        $rows .= '<div class="mx-1 flex-1">';
         for ($i = 0; $i < $show; $i++) {
-            $rows .= '<div class="w-full mb-1 text-center">';
+            if ($i == ($show - 1)) {
+                $mb = 'mb-0';
+            } else {
+                $mb = 'mb-1';
+            }
+            $rows .= '<div class="w-full ' . $mb . ' text-center">';
             for ($c = 0; $c < $length; $c++) {
-                $bg = $this->theme->getTileBG((new Helper())::getScore($i, $c));
-                $text = $this->theme->getTileText((new Helper())::getScore($i, $c));
-                $rows .= $this::tag('span', "$bg $text mx-1 px-1 text-center font-bold w-1/" . ($show + 1), strtoupper((new Helper)::getGuesses($i, $c, ' ')));
+                $style = $this->theme->getTile((new Helper())::getScore($i, $c));
+                $rows .= $this::tag('span', "$style mx-1 px-1 text-center font-bold w-1/" . ($show + 1), strtoupper((new Helper)::getGuesses($i, $c, ' ')));
             }
             $rows .= '</div>';
         }
@@ -33,7 +61,7 @@ class HTML
         return $rows;
     }
 
-    public function debugBar()
+    public function debug()
     {
         $out = '';
 
@@ -81,18 +109,9 @@ class HTML
 
     public function navTop()
     {
-        $bg = $this->theme->get('logo-bg');
-        $text = $this->theme->get('logo-text');
+        $content = 'php-<b>Wordle</b>';
 
-        $out = <<<HTML
-            <div class="m-1 flex-l">
-                <p class="m-0 text-center w-full">
-                    <span class="px-1 $bg $text text-center">php-<b>Wordle</b></span>
-                </p>
-            </div>
-        HTML;
-
-        return $out;
+        return $this->bar($content, 'logo');
     }
 
     public static function tag(string $tag, string $class = '', string $text = '')
