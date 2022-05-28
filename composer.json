@@ -1,6 +1,6 @@
 {
     "name": "carmelosantana/php-wordle",
-    "description": "CLI Wordle clone.",
+    "description": "Just another CLI Wordle clone.",
     "version": "0.2.0",
     "type": "project",
     "license": "MIT",
