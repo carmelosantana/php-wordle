@@ -25,7 +25,7 @@ Design reference and notes.
 ## Features
 
 - 2 game modes
-- Custom seeding for sycnhronous word selection
+- Custom seeding for synchronous word selection
 - On screen keyboard
 - Player statistics
 - Timer
@@ -93,14 +93,7 @@ graph TD;
     CheckWord--Fail-->CheckTries 
 ```
 
-### Statistics
-
-- Played
-- Win %
-- Current Streak
-- Max Streak
-- Guess Distribution
-
+### St
 ### Options
 
 - Hard Mode
