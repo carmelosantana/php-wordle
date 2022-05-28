@@ -6,17 +6,17 @@ namespace CarmeloSantana\PHPWordle;
 
 class Helper
 {
-    public static function addGuess($guess)
+    public static function addGuess(string $guess): void
     {
         $GLOBALS['GAME']->guesses[] = str_split($guess);
     }
 
-    public static function addScore($score)
+    public static function addScore(array $score): void
     {
         $GLOBALS['GAME']->scores[] = $score;
     }
 
-    public static function getInstance()
+    public static function getInstance(): object
     {
         return $GLOBALS['GAME'];
     }
@@ -26,37 +26,37 @@ class Helper
         return $_ENV[$key] ?? $default;
     }
 
-    public static function getGuess($default = '')
+    public static function getGuess(string $default = ''): string
     {
         return self::getInstance()->guess ?? $default;
     }
 
-    public static function getGuesses($row, $char, $default = ' ')
+    public static function getGuesses(int $row, int $char, string $default = ' '): string
     {
         return self::getInstance()->guesses[$row][$char] ?? $default;
     }
 
-    public static function getRound()
+    public static function getRound(): object
     {
         return self::getInstance()->round;
     }
 
-    public static function getScore($row, $char, $default = 0)
+    public static function getScore(int $row, int $char, $default = 0): int
     {
         return self::getInstance()->scores[$row][$char] ?? $default;
     }
 
-    public static function getMaxDisplay()
+    public static function getMaxDisplay(): int
     {
         return self::getRound()->mode->getCurrent()['max_display'];
     }
 
-    public static function getMaxLength()
+    public static function getMaxLength(): int
     {
         return self::getRound()->mode->getCurrent()['max_length'];
     }
 
-    public static function getMaxTries()
+    public static function getMaxTries(): int
     {
         return self::getRound()->mode->getCurrent()['max_tries'];
     }
@@ -66,17 +66,17 @@ class Helper
         return self::getRound()->state;
     }
 
-    public static function getTheme(string $style)
+    public static function getTheme(string $style): string
     {
         return self::getRound()->render->theme->get($style);
     }
 
-    public static function getTries()
+    public static function getTries(): int
     {
         return self::getRound()->tries;
     }
 
-    public static function getWord()
+    public static function getWord(): string
     {
         return self::getRound()->word;
     }
@@ -98,12 +98,12 @@ class Helper
         return filter_var($variable, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     }
 
-    public static function isDebug()
+    public static function isDebug(): bool
     {
         return self::isEnabled(self::getenv('DEBUG'));
     }
 
-    public static function keyboardInput()
+    public static function keyboardInput(): string
     {
         // https://stackoverflow.com/a/3684565
         system("stty -icanon");
@@ -113,7 +113,7 @@ class Helper
         }
     }
 
-    public static function loadEnv()
+    public static function loadEnv(): object
     {
         $dotenv = \Dotenv\Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
@@ -121,7 +121,7 @@ class Helper
         return $dotenv;
     }
 
-    public static function removeLastGuess()
+    public static function removeLastGuess(): void
     {
         array_pop(self::getInstance()->guesses);
     }

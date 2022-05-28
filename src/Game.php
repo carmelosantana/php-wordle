@@ -15,8 +15,12 @@ class Game
         $this->dotenv = (new Helper())::loadEnv();
     }
 
-    // Start game.
-    public function run()
+    /**
+     * Start running game after loading.
+     * 
+     * @return void
+     */
+    public function run(): void
     {
         // Start match.
         $this->round->game();

@@ -13,7 +13,6 @@ class Mode
         'max_length' => 5,
         'max_display' => 6,
         'max_tries' => 6,
-        'seed' => 'seedDaily',
     ];
 
     // All modes available during runtime.
@@ -24,26 +23,36 @@ class Mode
         [
             'name' => 'Daily',
             'description' => 'Daily php-Wordle with shared community seed.',
+            'seed' => 'seedDaily',
         ],
         [
             'name' => 'Trainer',
             'description' => 'Unlimited matches!',
             'max_tries' => -1,
-            'seed' => 0,
         ],
     ];
 
+    /**
+     * Initialize game modes. 
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->add();
     }
 
-    public function add()
+    /**
+     * Builds functional game modes merging default values.
+     *
+     * @return void
+     */
+    public function add(): void
     {
         $c = 0;
         foreach ($this->standard as $mode) {
             $tmp = array_merge($this->defaults, $mode);
-            if ($tmp['seed']) {
+            if (isset($tmp['seed'])) {
                 $tmp['seed'] = $this->{$tmp['seed']}();
             }
             $this->modes[] = $tmp;
@@ -66,6 +75,11 @@ class Mode
         return $this->modes[$this->mode];
     }
 
+    /**
+     * Generates seed for unified daily game.
+     *
+     * @return int
+     */
     public function seedDaily(): int
     {
         return strtotime(gmdate('Ymd'));

@@ -6,25 +6,49 @@ namespace CarmeloSantana\PHPWordle;
 
 class Words
 {
+    // Selectable words.
     private $wordsDB = [];
 
+    /**
+     * Builds selectable words list from a file.
+     * Defaults to the pre-NYT word list.
+     *
+     * @param string $file File path
+     * 
+     * @return void
+     */
     public function __construct(
         public string $file = ''
     ) {
         if (empty($this->file)) {
-            $this->file = dirname(__DIR__) . '/data/words.txt';
+            $this->file = dirname(__DIR__) . '/wordle-words/word-bank.csv';
         }
 
         $this->loadList($this->file);
     }
 
-    public function getRandomWord($seed): string
+    /**
+     * Selects a random word from the list.
+     * Use a seed to get the same word every time.
+     *
+     * @param int $seed 
+     *
+     * @return string
+     */
+    public function getRandomWord(int $seed = 0): string
     {
         srand($seed);
         return $this->wordsDB[array_rand($this->wordsDB)];
     }
 
-    public function loadList($file): void
+    /**
+     * Populates the words list from a file.
+     *
+     * @param string $file File path
+     *
+     * @return void
+     */
+    public function loadList(string $file): void
     {
         $handle = fopen($file, 'r');
         if ($handle) {
@@ -35,6 +59,16 @@ class Words
         }
     }
 
+    /**
+     * Performs validation on user guess.
+     * - Must be a string.
+     * - Only letters.
+     * - Length must match mode max_length.
+     *
+     * @param string $word User input
+     *
+     * @return bool
+     */
     public function isValidWord(string $word = ''): bool
     {
         $word = strtolower($word);

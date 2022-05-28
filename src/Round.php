@@ -15,7 +15,14 @@ class Round
     public int $tries = 0;
 
     public string $word = '';
-
+    
+    /**
+     * Starts new game mode.
+     *
+     * @param int $mode Selectable mode
+     *
+     * @return void
+     */
     public function __construct(int $mode = 0)
     {
         // Setup rounds.
@@ -32,8 +39,13 @@ class Round
         // Set tries.
         $this->tries = $this->mode->getCurrent()['max_tries'];
     }
-
-    public function game()
+    
+    /**
+     * Primary game loop.
+     *
+     * @return void
+     */
+    public function game(): void
     {
         // Start game.
         $this->state = State::Guessing;
@@ -66,8 +78,17 @@ class Round
         $this->state = State::Loss;
         $this->render->stop();
     }
-
-    public function score($guess)
+    
+    /**
+     * Score user guess.
+     * 2 for correct letter and position
+     * 1 for correct letter
+     *
+     * @param string $guess User input
+     *
+     * @return int
+     */
+    public function score(string $guess): array
     {
         $guess = str_split($guess);
         $word = str_split((new Helper())::getWord());

@@ -17,7 +17,12 @@ class Render
         $this->html = new HTML();
     }
 
-    public function container()
+    /**
+     * Clears terminal and renders all game output.
+     *
+     * @return void
+     */
+    public function container(): void
     {
         // Always clear terminal before rendering new container, if not debug.
         terminal()->clear();
@@ -29,12 +34,8 @@ class Render
 
         // Render various game states.
         switch ((new Helper())::getState()) {
-            case State::Won:
             case State::Loss:
                 $out .= $this->html->board();
-                // $out .= $this->html->report();
-
-            case State::Loss:
                 $out .= $this->html->answer();
                 break;
 
@@ -49,6 +50,13 @@ class Render
         render($out);
     }
 
+    /**
+     * Adds, renders, and removes current guess from guesses array.
+     *
+     * @param string $answer User input
+     *
+     * @return void
+     */
     public function inputUpdate(string $answer): void
     {
         (new Helper())::addGuess($answer);
@@ -56,7 +64,12 @@ class Render
         (new Helper())::removeLastGuess();
     }
 
-    public function askWord()
+    /**
+     * Handles user input.
+     *
+     * @return void
+     */
+    public function askWord(): string
     {
         $answer = '';
         $skip = 0;
@@ -97,13 +110,17 @@ class Render
         }
     }
 
-    // We're done.
-    public function stop()
+    /**
+     * ¡Hasta mañana! 👋
+     *
+     * @return void
+     */
+    public function stop(): void
     {
         // Final render before close.
         $this->container();
 
-        // ¡Hasta mañana!
+        // We're done.
         exit;
     }
 }

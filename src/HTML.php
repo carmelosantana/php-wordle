@@ -11,17 +11,26 @@ class HTML
         $this->theme = new Theme();
     }
 
-    public function answer()
+    /**
+     * Correct answer.
+     *
+     * @return string
+     */
+    public function answer(): string
     {
-        $word = (new Helper())::getWord();
-
-        return $this->bar($word, 'answer');
+        return $this->bar((new Helper())::getWord(), 'answer');
     }
 
-    public function bar(
-        string $content,
-        string $style,
-    ) {
+    /**
+     * Full width bar.
+     *
+     * @param string $content Inner content
+     * @param string $style tailwindcss class
+     *
+     * @return string
+     */
+    public function bar(string $content, string $style): string
+    {
         $style = $this->theme->get($style);
 
         $out = <<<HTML
@@ -35,7 +44,12 @@ class HTML
         return $out;
     }
 
-    public function board()
+    /**
+     * Board output with entries and colored tiles.
+     *
+     * @return string
+     */
+    public function board(): string
     {
         $length = (new Helper())::getMaxLength();
 
@@ -61,7 +75,12 @@ class HTML
         return $rows;
     }
 
-    public function debug()
+    /**
+     * Debugger with current word, entry and retries.
+     *
+     * @return string
+     */
+    public function debug(): string
     {
         $out = '';
 
@@ -89,7 +108,7 @@ class HTML
         return $out;
     }
 
-    public function footer()
+    public function footer(): string
     {
         $out = <<<HTML
             </div>
@@ -98,23 +117,32 @@ class HTML
         return $out;
     }
 
-    public function header()
+    public function header(): string
     {
         $out = <<<HTML
-            <div>
+            <div class="mb-2">
         HTML;
 
         return $out;
     }
 
-    public function navTop()
+    public function navTop(): string
     {
         $content = 'php-<b>Wordle</b>';
 
         return $this->bar($content, 'logo');
     }
 
-    public static function tag(string $tag, string $class = '', string $text = '')
+    /**
+     * Wrapper for building tags.
+     *
+     * @param string $tag HTML tag
+     * @param string $class Classes
+     * @param string $text Content
+     *
+     * @return string
+     */
+    public static function tag(string $tag, string $class = '', string $text = ''): string
     {
         return "<$tag" . (!empty($class) ? " class='$class'" : "") . ">$text</$tag>";
     }
