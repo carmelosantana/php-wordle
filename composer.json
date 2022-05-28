@@ -21,9 +21,6 @@
         "tigitz/php-spellchecker": "^0.4.0",
         "vlucas/phpdotenv": "^5.4"
     },
-    "require-dev": {
-        "pestphp/pest": "^1.21"
-    },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
